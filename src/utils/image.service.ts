@@ -2,15 +2,11 @@ import { ImageResizerType } from 'src/types/imageResizer.type';
 import * as sharp from 'sharp';
 import { UnsupportedFileTypeException } from 'src/exceptions/unsupportedFileType.exception';
 
-export function saveResizedImage(
+export async function processImage(
   file: Express.Multer.File,
   type: ImageResizerType,
-  path: string,
 ) {
-  return sharp(file.buffer)
-    .resize(type, type)
-    .png()
-    .toFile(path + '.png');
+  return await sharp(file.buffer).resize(type, type).png().toBuffer();
 }
 
 export const imageSizes: ImageResizerType[] = [

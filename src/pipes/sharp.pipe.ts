@@ -1,29 +1,22 @@
 import { Injectable, PipeTransform } from '@nestjs/common';
-import * as path from 'path';
 import { imageSizes } from 'src/utils/image.service';
-import { saveResizedImage } from 'src/utils/image.service';
+import { processImage } from 'src/utils/image.service';
 import * as crypto from 'crypto';
-import * as fs from 'fs';
+import { Aws3Service } from 'src/utils/aws3.service';
 
 @Injectable()
 export class SharpPipe
   implements PipeTransform<Express.Multer.File, Promise<string>>
 {
+  constructor(private readonly aws3Service: Aws3Service) {}
+
   async transform(image: Express.Multer.File): Promise<string> {
     const filename = crypto.randomBytes(16).toString('hex');
 
-    const filePromises = [];
     for (const type of imageSizes) {
-      const imagePath = path.join(
-        process.env.PROFILE_IMAGE_FOLDER,
-        `${filename}-${type}`,
-      );
-      if (!fs.existsSync(process.env.PROFILE_IMAGE_FOLDER)) {
-        fs.mkdirSync(process.env.PROFILE_IMAGE_FOLDER, { recursive: true });
-      }
-      filePromises.push(saveResizedImage(image, type, imagePath));
+      const imageBuffer = await processImage(image, type);
+      await this.aws3Service.upload(`${filename}-${type}.png`, imageBuffer);
     }
-    await Promise.all(filePromises);
     return filename;
   }
 }

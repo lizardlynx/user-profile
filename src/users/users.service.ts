@@ -9,15 +9,15 @@ import { MailService } from 'src/utils/mail.service';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './schemas/user.schema';
 import { Model } from 'mongoose';
-import * as path from 'path';
 import { imageSizes } from 'src/utils/image.service';
-import * as fs from 'fs';
+import { Aws3Service } from 'src/utils/aws3.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     private readonly mailService: MailService,
     @InjectModel(User.name) private userModel: Model<User>,
+    private readonly aws3Service: Aws3Service,
   ) {}
 
   async getUserByLogin(login: string, fields: string = ''): Promise<User> {
@@ -102,18 +102,15 @@ export class UsersService {
   }
 
   async setProfilePicture(login: string, fileName: string) {
-    const paths = imageSizes.map((type) =>
-      path.join(
-        process.env.PROFILE_IMAGE_FOLDER.split('/')[1],
-        `${fileName}-${type}.png`,
-      ),
+    const paths = imageSizes.map(
+      (type) =>
+        `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_S3_REGION}.amazonaws.com/${fileName}-${type}.png`,
     );
     const user = await this.getUserByLogin(login);
     if ('profilePicture' in user) {
       const images = user.profilePicture;
       for (const image of images) {
-        const imagePath = path.join(process.env.STATIC_FOLDER, image);
-        fs.unlinkSync(imagePath);
+        await this.aws3Service.delete(image.split('/').pop());
       }
     }
 

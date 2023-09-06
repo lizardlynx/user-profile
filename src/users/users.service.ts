@@ -104,7 +104,7 @@ export class UsersService {
   async setProfilePicture(login: string, fileName: string) {
     const paths = imageSizes.map(
       (type) =>
-        `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_S3_REGION}.amazonaws.com/${fileName}-${type}.png`,
+        `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.MY_AWS_S3_REGION}.amazonaws.com/${fileName}-${type}.png`,
     );
     const user = await this.getUserByLogin(login);
     if ('profilePicture' in user) {

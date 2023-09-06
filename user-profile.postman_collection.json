@@ -1,0 +1,205 @@
+{
+	"info": {
+		"_postman_id": "6e9ce24a-3e89-4c95-86b1-89a6ee5a3c0f",
+		"name": "user-profile",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18381090"
+	},
+	"item": [
+		{
+			"name": "createUser",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstName\":\"Bender\",\n    \"surname\":\"Rodríguez\",\n    \"login\":\"benderbot\",\n    \"password\":\"iamthegreatest\",\n    \"email\":\"gorbunova.elizaveta@gmail.com\", //insert your email to test verification\n    \"birthDate\":\"1999-03-28\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://extinct-pink-coveralls.cyclic.app/users/new",
+					"protocol": "https",
+					"host": [
+						"extinct-pink-coveralls",
+						"cyclic",
+						"app"
+					],
+					"path": [
+						"users",
+						"new"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getUserByLogin",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://extinct-pink-coveralls.cyclic.app/users/benderbot",
+					"protocol": "https",
+					"host": [
+						"extinct-pink-coveralls",
+						"cyclic",
+						"app"
+					],
+					"path": [
+						"users",
+						"benderbot"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User SignIn",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"login\": \"benderbot\",\n    \"password\": \"iamthegreatest\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://extinct-pink-coveralls.cyclic.app/auth/signIn",
+					"protocol": "https",
+					"host": [
+						"extinct-pink-coveralls",
+						"cyclic",
+						"app"
+					],
+					"path": [
+						"auth",
+						"signIn"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Profile",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJlbmRlcmJvdCIsImlhdCI6MTY5NDAwMzYyMSwiZXhwIjoxNjk0MDkwMDIxfQ.KfFayZ2pLwTJEef-g-swq8OWlgirlhJRxgEcvxaSKb0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstName\":\"BendeR\",\n    \"surname\":\"RodrígueZ\",\n    \"some_unnecessary_data\": \"Kill all humans!\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://extinct-pink-coveralls.cyclic.app/users/profile",
+					"protocol": "https",
+					"host": [
+						"extinct-pink-coveralls",
+						"cyclic",
+						"app"
+					],
+					"path": [
+						"users",
+						"profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Upload Image",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJlbmRlcmJvdCIsImlhdCI6MTY5NDAwMzYyMSwiZXhwIjoxNjk0MDkwMDIxfQ.KfFayZ2pLwTJEef-g-swq8OWlgirlhJRxgEcvxaSKb0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/home/liza/Downloads/734e21d77b3f91ae302459c8527935a0-100.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://extinct-pink-coveralls.cyclic.app/users/profile/image",
+					"protocol": "https",
+					"host": [
+						"extinct-pink-coveralls",
+						"cyclic",
+						"app"
+					],
+					"path": [
+						"users",
+						"profile",
+						"image"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Profile Image",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://user-profile333.s3.eu-north-1.amazonaws.com/a4bd176b8f70a452b6097d57f7bbf3fa-260.png",
+					"protocol": "https",
+					"host": [
+						"user-profile333",
+						"s3",
+						"eu-north-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"a4bd176b8f70a452b6097d57f7bbf3fa-260.png"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
